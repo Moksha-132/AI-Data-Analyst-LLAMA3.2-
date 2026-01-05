@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="margin-top: 1rem;">
+    <!-- SECTION: HEADER -->
+    <div class="dashboard-section">
+        <div class="section-header">
+            <div class="section-title">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"></path>
+                    <path d="M12 6v6l4 2"></path>
+                </svg>
+                AI Insights & Recommendations
+            </div>
+            <div class="section-subtitle">Automated Decision Intelligence</div>
+        </div>
+    </div>
+</div>
+
+{% if has_data and insight %}
+<!-- SECTION: INSIGHT CARDS -->
+<div class="dashboard-section">
+    <div class="card" style="border: 1px solid var(--primary); box-shadow: var(--shadow-glow);">
+        <div class="insight-card-container" style="padding: 1.5rem;">
+            {% for title, data in insight.items() %}
+            {% set clean_title = title|lower %}
+
+            {# EXECUTIVE SUMMARY HERO #}
+            {% if 'executive' in clean_title %}
+            <div
+                style="background: linear-gradient(to right, rgba(37, 99, 235, 0.1), transparent); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 2rem; border-radius: 0 8px 8px 0;">
+                <h2 style="color: var(--text-primary); margin-bottom: 0.5rem; font-size: 1.5rem;">{{ title }}</h2>
+                <p style="font-size: 1.05rem; line-height: 1.7; color: var(--text-secondary);">{{ data.content }}
+                </p>
+            </div>
+
+            {# STANDARD INSIGHT CARDS #}
+            {% else %}
+            <div class="insight-section"
+                style="margin-bottom: 2.5rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; border-left: 4px solid var(--primary);">
+                <!-- Card Header -->
+                <div
+                    style="padding: 1rem 1.5rem; background: var(--bg-card-alt); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                    <h4 style="margin: 0; font-size: 1.1rem; color: var(--text-primary); font-weight: 600;">
+                        {{ title }}
+                    </h4>
+                    <span class="badge badge-{{ data.confidence | lower }}">
+                        {{ data.confidence }} Confidence
+                    </span>
+                </div>
+
+                <!-- Card Body Grid -->
+                <div style="padding: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <!-- Col 1: Diagnosis -->
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div>
+                            <div
+                                style="text-transform: uppercase; font-size: 0.7rem; color: var(--text-tertiary); margin-bottom: 0.5rem; font-weight: 600; letter-spacing: 0.05em;">
+                                Observation</div>
+                            <div style="color: var(--text-primary); line-height: 1.6;">{{ data.observation }}</div>
+                        </div>
+                        {% if 'conclusion' not in clean_title %}
+                        <div>
+                            <div
+                                style="text-transform: uppercase; font-size: 0.7rem; color: var(--text-tertiary); margin-bottom: 0.5rem; font-weight: 600; letter-spacing: 0.05em;">
+                                Root Cause (Why)</div>
+                            <div style="color: var(--text-secondary); line-height: 1.6; font-style: italic;">"{{
+                                data.root_cause }}"</div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Col 2: Action -->
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        {% if 'conclusion' not in clean_title %}
+                        <div>
+                            <div
+                                style="text-transform: uppercase; font-size: 0.7rem; color: var(--warning); margin-bottom: 0.5rem; font-weight: 600; letter-spacing: 0.05em;">
+                                Business Impact</div>
+                            <div style="color: var(--text-primary); line-height: 1.6;">{{ data.impact }}</div>
+                        </div>
+                        <div>
+                            <div
+                                style="text-transform: uppercase; font-size: 0.7rem; color: var(--success); margin-bottom: 0.5rem; font-weight: 600; letter-spacing: 0.05em;">
+                                Recommendation</div>
+                            <div
+                                style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--success); color: var(--text-primary); font-size: 0.95rem;">
+                                {{ data.recommendation }}
+                            </div>
+                        </div>
+                        {% else %}
+                        <div
+                            style="display: flex; align-items: center; height: 100%; justify-content: center; opacity: 0.3;">
+                            <svg class="icon" style="width: 48px; height: 48px;" viewBox="0 0 24 24">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {# EVIDENCE LINK (Optional footer) #}
+                {% if data.evidence and data.evidence != 'None' %}
+                <div style="padding: 0.75rem 1.5rem; background: rgba(0,0,0,0.1); border-top: 1px solid var(--border);">
+                    <a href="{{ url_for('dashboard') }}#chart-{{ data.evidence|lower }}"
+                        style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-size: 0.85rem; font-weight: 500;">
+                        <span>View Evidence Source</span>
+                        <svg class="icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% elif has_data and not insight %}
+<!-- Loading/Generating State -->
+<div style="text-align: center; padding: 4rem; color: var(--text-tertiary);">
+    <div class="spinner" style="margin: 0 auto 1.5rem auto; width: 40px; height: 40px; border-width: 3px;"></div>
+    <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">Generating AI Insights...</h3>
+    <p>Our AI is analyzing your data in the background. This usually takes 10-30 seconds.</p>
+    <p style="font-size: 0.85rem; margin-top: 1rem; opacity: 0.7;">This page will automatically refresh when ready.
+    </p>
+
+    <div style="margin-top: 2rem;">
+        <button class="btn btn-secondary" onclick="window.location.reload()" style="font-size: 0.8rem;">
+            Check Now
+        </button>
+    </div>
+</div>
+
+<!-- Auto-refresh script -->
+<script>
+    setTimeout(function () {
+        window.location.reload();
+    }, 5000); // Refresh every 5 seconds
+</script>
+
+{% elif not has_data %}
+<!-- Empty State -->
+<div style="text-align: center; padding: 4rem; color: var(--text-tertiary);">
+    <p>No data available. Please analyze a dataset on the Dashboard first.</p>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-primary" style="margin-top: 1rem;">Go to Dashboard</a>
+</div>
+{% endif %}
+</div>
+{% endblock %}

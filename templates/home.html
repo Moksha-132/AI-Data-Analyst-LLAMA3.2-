@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="hero-wrapper">
+    <div class="hero-content">
+        <h1>AI Data Insight Generator</h1>
+        <h2 style="font-weight: 400; color: var(--text-secondary); font-size: 1.5rem; margin-bottom: 2rem;">
+            Explainable Analytics & Decision Intelligence
+        </h2>
+        <p style="font-size: 1.1rem; margin-bottom: 3rem; color: var(--text-tertiary);">
+            Transform raw CSV data into executive-level insights, explanations, and actionable recommendations —
+            completely offline.
+        </p>
+
+        <div style="display: flex; gap: 1rem;">
+            {% if not session.get('authenticated') %}
+            <a href="{{ url_for('login') }}" class="btn btn-primary"
+                style="padding: 1rem 2.5rem; font-size: 1.1rem;">Login</a>
+            <a href="{{ url_for('signup') }}" class="btn btn-success"
+                style="padding: 1rem 2.5rem; font-size: 1.1rem;">Sign Up</a>
+            {% else %}
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary"
+                style="padding: 1rem 2.5rem; font-size: 1.1rem;">Go to Dashboard</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div style="display: flex; justify-content: flex-end;">
+        {% if hero_exists %}
+        <!-- Using the reference style hero image -->
+        <img src="{{ hero_path }}" alt="AI Analytics Dashboard" class="hero-img">
+        {% else %}
+        <!-- Fallback placeholder if image is missing -->
+        <div class="card"
+            style="width: 100%; height: 300px; display: flex; align-items: center; justify-content: center; border: 2px dashed var(--border);">
+            <span style="color: var(--text-secondary);">Hero Image Placeholder</span>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="auth-page">
+    <canvas id="bg-canvas"></canvas>
+    <div class="glass-card">
+
+        <!-- Brand / Header -->
+        <div class="auth-brand">
+            <svg class="icon" style="width: 24px; height: 24px; color: #3b82f6;" viewBox="0 0 24 24">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+            DataInsight
+        </div>
+
+        <h2 class="auth-title">Welcome Back</h2>
+        <p class="auth-subtitle">Sign in to your analytics dashboard.</p>
+
+        <form method="POST">
+            <!-- Username Input -->
+            <div class="input-group">
+                <label class="input-label" for="username">Username</label>
+                <div class="input-wrapper">
+                    <input type="text" name="username" id="username" class="glass-input"
+                        placeholder="Enter your username" required>
+                    <!-- User Icon -->
+                    <svg class="input-icon" viewBox="0 0 24 24">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Password Input -->
+            <div class="input-group">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <label class="input-label" for="password" style="margin:0;">Password</label>
+                    <a href="#" class="forgot-link">Forgot password?</a>
+                </div>
+                <div class="input-wrapper">
+                    <input type="password" name="password" id="password" class="glass-input"
+                        placeholder="Enter your password" required>
+                    <!-- Lock Icon -->
+                    <svg class="input-icon" viewBox="0 0 24 24">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <button type="submit" class="glass-btn">Log In</button>
+        </form>
+
+        <div class="auth-footer">
+            Don't have an account? <a href="{{ url_for('signup') }}">Sign Up Free</a>
+        </div>
+    </div>
+
+    <div class="bottom-credits">
+        •• AI-Driven Data Insights • Enterprise Grade Analytics
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/auth_animation.js') }}"></script>
+
+<!-- Override Base Styles using Scope (Optional but safer if base has padding) -->
+<style>
+    /* Remove base container padding only for auth pages to allow full screen */
+    main.container {
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Hide Navbar/Footer on Auth Pages if desired, or style them to overlay. 
+       For this specific requested design, the Navbar usually isn't shown, 
+       but we inherit Base. We'll hide main nav for a cleaner look or keep it.
+       The screenshot showed NO navbar. 
+    */
+    .navbar,
+    .footer {
+        display: none !important;
+    }
+</style>
+{% endblock %}

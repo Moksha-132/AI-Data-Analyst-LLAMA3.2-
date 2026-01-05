@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="margin-top: 1rem;">
+    <!-- SECTION: HEADER -->
+    <div class="dashboard-section">
+        <div class="section-header">
+            <div class="section-title">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="3" y1="9" x2="21" y2="9"></line>
+                    <line x1="9" y1="21" x2="9" y2="9"></line>
+                </svg>
+                Data Explorer
+            </div>
+            <div class="section-subtitle">Raw Dataset Preview</div>
+        </div>
+    </div>
+
+    {% if has_data and preview_html %}
+    <!-- SECTION: DATA TABLE -->
+    <div class="dashboard-section">
+        <div class="card">
+            <div class="data-preview">
+                {{ preview_html|safe }}
+            </div>
+        </div>
+    </div>
+    {% elif not has_data %}
+    <!-- Empty State -->
+    <div style="text-align: center; padding: 4rem; color: var(--text-tertiary);">
+        <p>No data available. Please analyze a dataset on the Dashboard first.</p>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-primary" style="margin-top: 1rem;">Go to Dashboard</a>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}
