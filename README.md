@@ -66,10 +66,7 @@ Before running the application, ensure you have the following installed:
 - `static/`: CSS, JavaScript, and asset files.
 - `utils/`: Common utility functions and parsers.
 
-## � Author
+## Author
 
 **Lakshmi Moksha Boya**
 
-## �📝 License
-
-This project is for educational and professional data analysis purposes.
